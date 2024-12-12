@@ -7,7 +7,7 @@ cmake_dependent_option(ES_GLES "Build the game with OpenGL ES" OFF UNIX OFF)
 set(CMAKE_CONFIGURATION_TYPES "Debug" "Release" CACHE STRING "" FORCE)
 
 # Use C++17 without any compiler specific extensions.
-set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
+set(CMAKE_CXX_STANDARD 20 CACHE STRING "")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # Use LTO for Release builds only.
