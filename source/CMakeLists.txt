@@ -11,12 +11,11 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/AmmoDisplay.h
 	../endless-sky/source/Angle.cpp
 	../endless-sky/source/Angle.h
+	../endless-sky/source/Animate.h
 	../endless-sky/source/Armament.cpp
 	../endless-sky/source/Armament.h
 	../endless-sky/source/AsteroidField.cpp
 	../endless-sky/source/AsteroidField.h
-	../endless-sky/source/audio/Audio.cpp
-	../endless-sky/source/audio/Audio.h
 	../endless-sky/source/BankPanel.cpp
 	../endless-sky/source/BankPanel.h
 	../endless-sky/source/BatchDrawList.cpp
@@ -37,8 +36,11 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/CategoryList.h
 	../endless-sky/source/CategoryTypes.h
 	../endless-sky/source/ClickZone.h
+	../endless-sky/source/Collision.cpp
+	../endless-sky/source/Collision.h
 	../endless-sky/source/CollisionSet.cpp
 	../endless-sky/source/CollisionSet.h
+	../endless-sky/source/CollisionType.h
 	../endless-sky/source/Color.cpp
 	../endless-sky/source/Color.h
 	../endless-sky/source/Command.cpp
@@ -87,6 +89,7 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/EscortDisplay.cpp
 	../endless-sky/source/EscortDisplay.h
 	../endless-sky/source/ExclusiveItem.h
+	../endless-sky/source/FighterHitHelper.h
 	../endless-sky/source/File.cpp
 	../endless-sky/source/File.h
 	../endless-sky/source/Files.cpp
@@ -105,6 +108,8 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/FogShader.h
 	../endless-sky/source/FormationPattern.cpp
 	../endless-sky/source/FormationPattern.h
+	../endless-sky/source/FormationPositioner.cpp
+	../endless-sky/source/FormationPositioner.h
 	../endless-sky/source/FrameTimer.cpp
 	../endless-sky/source/FrameTimer.h
 	../endless-sky/source/Galaxy.cpp
@@ -133,10 +138,6 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/Hazard.h
 	../endless-sky/source/HiringPanel.cpp
 	../endless-sky/source/HiringPanel.h
-	../endless-sky/source/image/ImageBuffer.cpp
-	../endless-sky/source/image/ImageBuffer.h
-	../endless-sky/source/image/ImageSet.cpp
-	../endless-sky/source/image/ImageSet.h
 	../endless-sky/source/InfoPanelState.cpp
 	../endless-sky/source/InfoPanelState.h
 	../endless-sky/source/Information.cpp
@@ -170,14 +171,12 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/MapSalesPanel.h
 	../endless-sky/source/MapShipyardPanel.cpp
 	../endless-sky/source/MapShipyardPanel.h
-	../endless-sky/source/image/Mask.cpp
-	../endless-sky/source/image/Mask.h
-	../endless-sky/source/image/MaskManager.cpp
-	../endless-sky/source/image/MaskManager.h
 	../endless-sky/source/MenuAnimationPanel.cpp
 	../endless-sky/source/MenuAnimationPanel.h
 	../endless-sky/source/MenuPanel.cpp
 	../endless-sky/source/MenuPanel.h
+	../endless-sky/source/MessageLogPanel.cpp
+	../endless-sky/source/MessageLogPanel.h
 	../endless-sky/source/Messages.cpp
 	../endless-sky/source/Messages.h
 	../endless-sky/source/Minable.cpp
@@ -190,8 +189,6 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/MissionPanel.h
 	../endless-sky/source/Mortgage.cpp
 	../endless-sky/source/Mortgage.h
-	../endless-sky/source/audio/Music.cpp
-	../endless-sky/source/audio/Music.h
 	../endless-sky/source/NPC.cpp
 	../endless-sky/source/NPC.h
 	../endless-sky/source/NPCAction.cpp
@@ -208,6 +205,8 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/OutlineShader.h
 	../endless-sky/source/Panel.cpp
 	../endless-sky/source/Panel.h
+	../endless-sky/source/Paragraphs.cpp
+	../endless-sky/source/Paragraphs.h
 	../endless-sky/source/Person.cpp
 	../endless-sky/source/Person.h
 	../endless-sky/source/Personality.cpp
@@ -232,6 +231,8 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/PointerShader.h
 	../endless-sky/source/Politics.cpp
 	../endless-sky/source/Politics.h
+	../endless-sky/source/Port.cpp
+	../endless-sky/source/Port.h
 	../endless-sky/source/Preferences.cpp
 	../endless-sky/source/Preferences.h
 	../endless-sky/source/PreferencesPanel.cpp
@@ -242,11 +243,15 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/Projectile.h
 	../endless-sky/source/Radar.cpp
 	../endless-sky/source/Radar.h
+	../endless-sky/source/RaidFleet.cpp
+	../endless-sky/source/RaidFleet.h
 	../endless-sky/source/Random.cpp
 	../endless-sky/source/Random.h
 	../endless-sky/source/RandomEvent.h
 	../endless-sky/source/Rectangle.cpp
 	../endless-sky/source/Rectangle.h
+	../endless-sky/source/RenderBuffer.cpp
+	../endless-sky/source/RenderBuffer.h
 	../endless-sky/source/RingShader.cpp
 	../endless-sky/source/RingShader.h
 	../endless-sky/source/Sale.h
@@ -254,6 +259,9 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/SavedGame.h
 	../endless-sky/source/Screen.cpp
 	../endless-sky/source/Screen.h
+	../endless-sky/source/ScrollBar.cpp
+	../endless-sky/source/ScrollBar.h
+	../endless-sky/source/ScrollVar.h
 	../endless-sky/source/Set.h
 	../endless-sky/source/Shader.cpp
 	../endless-sky/source/Shader.h
@@ -267,20 +275,16 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/ShipInfoPanel.h
 	../endless-sky/source/ShipJumpNavigation.cpp
 	../endless-sky/source/ShipJumpNavigation.h
+	../endless-sky/source/ShipManager.cpp
+	../endless-sky/source/ShipManager.h
+	../endless-sky/source/ShipNameDialog.cpp
+	../endless-sky/source/ShipNameDialog.h
 	../endless-sky/source/ShipyardPanel.cpp
 	../endless-sky/source/ShipyardPanel.h
 	../endless-sky/source/ShopPanel.cpp
 	../endless-sky/source/ShopPanel.h
-	../endless-sky/source/audio/Sound.cpp
-	../endless-sky/source/audio/Sound.h
-	../endless-sky/source/audio/SoundSet.cpp
-	../endless-sky/source/audio/SoundSet.h
 	../endless-sky/source/SpaceportPanel.cpp
 	../endless-sky/source/SpaceportPanel.h
-	../endless-sky/source/image/Sprite.cpp
-	../endless-sky/source/image/Sprite.h
-	../endless-sky/source/image/SpriteSet.cpp
-	../endless-sky/source/image/SpriteSet.h
 	../endless-sky/source/SpriteShader.cpp
 	../endless-sky/source/SpriteShader.h
 	../endless-sky/source/StarField.cpp
@@ -291,17 +295,15 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/StartConditionsPanel.h
 	../endless-sky/source/StellarObject.cpp
 	../endless-sky/source/StellarObject.h
+	../endless-sky/source/StringInterner.cpp
+	../endless-sky/source/StringInterner.h
 	../endless-sky/source/System.cpp
 	../endless-sky/source/System.h
 	../endless-sky/source/SystemEntry.h
 	../endless-sky/source/TaskQueue.cpp
 	../endless-sky/source/TaskQueue.h
-	../endless-sky/source/test/Test.cpp
-	../endless-sky/source/test/Test.h
-	../endless-sky/source/test/TestContext.cpp
-	../endless-sky/source/test/TestContext.h
-	../endless-sky/source/test/TestData.cpp
-	../endless-sky/source/test/TestData.h
+	../endless-sky/source/TextArea.cpp
+	../endless-sky/source/TextArea.h
 	../endless-sky/source/TextReplacements.cpp
 	../endless-sky/source/TextReplacements.h
 	../endless-sky/source/Trade.cpp
@@ -326,11 +328,37 @@ target_sources(Editor PRIVATE
 	../endless-sky/source/WormholeStrategy.h
 	../endless-sky/source/pi.h
 	../endless-sky/source/shift.h
+	../endless-sky/source/audio/Audio.cpp
+	../endless-sky/source/audio/Audio.h
+	../endless-sky/source/audio/Music.cpp
+	../endless-sky/source/audio/Music.h
+	../endless-sky/source/audio/Sound.cpp
+	../endless-sky/source/audio/Sound.h
+	../endless-sky/source/audio/SoundSet.cpp
+	../endless-sky/source/audio/SoundSet.h
 	../endless-sky/source/comparators/ByGivenOrder.h
 	../endless-sky/source/comparators/ByName.h
 	../endless-sky/source/comparators/BySeriesAndIndex.h
+	../endless-sky/source/image/ImageBuffer.cpp
+	../endless-sky/source/image/ImageBuffer.h
+	../endless-sky/source/image/ImageSet.cpp
+	../endless-sky/source/image/ImageSet.h
+	../endless-sky/source/image/Mask.cpp
+	../endless-sky/source/image/Mask.h
+	../endless-sky/source/image/MaskManager.cpp
+	../endless-sky/source/image/MaskManager.h
+	../endless-sky/source/image/Sprite.cpp
+	../endless-sky/source/image/Sprite.h
+	../endless-sky/source/image/SpriteSet.cpp
+	../endless-sky/source/image/SpriteSet.h
 	../endless-sky/source/ship/ShipAICache.cpp
 	../endless-sky/source/ship/ShipAICache.h
+	../endless-sky/source/test/Test.cpp
+	../endless-sky/source/test/Test.h
+	../endless-sky/source/test/TestContext.cpp
+	../endless-sky/source/test/TestContext.h
+	../endless-sky/source/test/TestData.cpp
+	../endless-sky/source/test/TestData.h
 	../endless-sky/source/text/DisplayText.cpp
 	../endless-sky/source/text/DisplayText.h
 	../endless-sky/source/text/Font.cpp
