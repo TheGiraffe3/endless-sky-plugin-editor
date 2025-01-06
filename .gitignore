@@ -12,6 +12,7 @@ resources/editor.icns
 
 # Build Directories and toolchain-generated files
 build/
+install/
 obj/
 bin/
 lib/
