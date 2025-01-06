@@ -1,6 +1,6 @@
 # Editor
 
-This is an unofficial plugin editor for Endless Sky. It is continuously updated, and supports the latest release of Endless Sky! You can download it [here](https://github.com/quyykk/plugin-editor/releases/latest).
+This is an unofficial plugin editor for Endless Sky. It is poorly updated and may support most features in Endless Sky version 0.10.10. Be very careful! You can download it [here](https://github.com/warp-core/endless-sky-plugin-editor/releases/latest).
 
 Features:
 
