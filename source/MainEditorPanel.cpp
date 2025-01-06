@@ -121,7 +121,11 @@ void MainEditorPanel::Step()
 	labels.clear();
 	for(const StellarObject &object : currentSystem->Objects())
 		if(object.planet)
-			labels.emplace_back(object.Position() - center, object, currentSystem, zoom, true);
+		{
+			//PlanetLabel newLabel(labels, *currentSystem, object);
+			//labels.push_back(newLabel);
+			labels.emplace_back(labels, *currentSystem, object);
+		}
 }
 
 

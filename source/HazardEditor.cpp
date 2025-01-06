@@ -22,9 +22,9 @@
 #include "Planet.h"
 #include "PlayerInfo.h"
 #include "Ship.h"
-#include "Sound.h"
-#include "SpriteSet.h"
-#include "Sprite.h"
+#include "audio/Sound.h"
+#include "image/SpriteSet.h"
+#include "image/Sprite.h"
 #include "System.h"
 #include "UI.h"
 

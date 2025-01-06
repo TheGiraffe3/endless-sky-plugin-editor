@@ -10,6 +10,7 @@
 #include "GameData.h"
 #include "Government.h"
 #include "Minable.h"
+#include "RaidFleet.h"
 #include "RandomEvent.h"
 #include "audio/Sound.h"
 #include "image/Sprite.h"
@@ -111,8 +112,8 @@ const std::string &NameFor(const T *obj) { return obj->Name(); }
 template <typename T, typename U>
 std::string NameFor(const std::pair<T, U> &obj) { return obj.first; }
 inline const std::string &NameFor(const System::Asteroid &obj) { return obj.Type() ? obj.Type()->TrueName() : obj.Name(); }
-inline std::string NameFor(const Government::RaidFleet &obj) { return obj.GetFleet() ? obj.GetFleet()->Name() : ""; }
-inline std::string NameFor(const Government::RaidFleet *obj) { return obj->GetFleet() ? obj->GetFleet()->Name() : ""; }
+inline std::string NameFor(const RaidFleet &obj) { return obj.GetFleet() ? obj.GetFleet()->Name() : ""; }
+inline std::string NameFor(const RaidFleet *obj) { return obj->GetFleet() ? obj->GetFleet()->Name() : ""; }
 inline std::string NameFor(double d) {
 	std::ostringstream stream;
 	stream << std::fixed << std::setprecision(3) << d;

@@ -23,9 +23,9 @@
 #include "Planet.h"
 #include "PlayerInfo.h"
 #include "Ship.h"
-#include "Sound.h"
-#include "SpriteSet.h"
-#include "Sprite.h"
+#include "audio/Sound.h"
+#include "image/SpriteSet.h"
+#include "image/Sprite.h"
 #include "System.h"
 #include "UI.h"
 
@@ -390,10 +390,10 @@ void PlanetEditor::RenderPlanet()
 		SetDirty();
 	if(ImGui::InputText("music", &object->music, ImGuiInputTextFlags_EnterReturnsTrue))
 		SetDirty();
-
+/*
 	if(ImGui::InputTextMultiline("description", &object->description))
 		SetDirty();
-	if(ImGui::InputTextMultiline("spaceport", &object->spaceport))
+	if(ImGui::InputTextMultiline("spaceport", &object->port.description))
 	{
 		SetDirty();
 
@@ -402,6 +402,7 @@ void PlanetEditor::RenderPlanet()
 		else
 			object->attributes.insert("spaceport");
 	}
+*/
 
 	{
 		static Government *selected;
@@ -421,7 +422,7 @@ void PlanetEditor::RenderPlanet()
 		SetDirty();
 	object->customSecurity = object->security != .25;
 
-	object->inhabited = (!object->spaceport.empty() || object->requiredReputation || !object->defenseFleets.empty()) && !object->attributes.count("uninhabited");
+	object->inhabited = (object->inhabited || object->requiredReputation || !object->defenseFleets.empty()) && !object->attributes.count("uninhabited");
 }
 
 
@@ -456,39 +457,41 @@ void PlanetEditor::WriteToFile(DataWriter &writer, const Planet *planet) const
 	}
 	if(!diff || planet->description != diff->description)
 	{
-		if(!planet->description.empty())
+		if(!planet->description.IsEmpty())
 		{
-			auto marker = planet->description.find('\n');
+			string description = planet->description.ToString();
+			auto marker = description.find('\n');
 			size_t start = 0;
 			do
 			{
-				string toWrite = planet->description.substr(start, marker - start);
+				string toWrite = description.substr(start, marker - start);
 				writer.Write("description", toWrite);
 
 				start = marker + 1;
-				if(planet->description[start] == '\t')
+				if(description[start] == '\t')
 					++start;
-				marker = planet->description.find('\n', start);
+				marker = description.find('\n', start);
 			} while(marker != string::npos);
 		}
 		else if(diff)
 			writer.Write("remove", "description");
 	}
-	if(!diff || planet->spaceport != diff->spaceport)
+	if(!diff || planet->port != diff->port)
 	{
-		if(!planet->spaceport.empty())
+		if(planet->port.loaded)
 		{
-			auto marker = planet->spaceport.find('\n');
+			string description = planet->port.description.ToString();
+			auto marker = description.find('\n');
 			size_t start = 0;
 			do
 			{
-				string toWrite = planet->spaceport.substr(start, marker - start);
+				string toWrite = description.substr(start, marker - start);
 				writer.Write("spaceport", toWrite);
 
 				start = marker + 1;
-				if(planet->spaceport[start] == '\t')
+				if(description[start] == '\t')
 					++start;
-				marker = planet->spaceport.find('\n', start);
+				marker = description.find('\n', start);
 			} while(marker != string::npos);
 		}
 		else if(diff)

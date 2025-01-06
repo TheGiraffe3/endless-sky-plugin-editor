@@ -37,11 +37,11 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 #include "Preferences.h"
 #include "Screen.h"
 #include "Ship.h"
-#include "SpriteSet.h"
+#include "image/SpriteSet.h"
 #include "SpriteShader.h"
 #include "TaskQueue.h"
-#include "Test.h"
-#include "TestContext.h"
+#include "test/Test.h"
+#include "test/TestContext.h"
 #include "UI.h"
 #include "Version.h"
 #include "imgui.h"
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 		NFD_Init();
 
 
-		GameData::LoadShaders(!GameWindow::HasSwizzle());
+		GameData::LoadShaders();
 
 		// Show something other than a blank window.
 		GameWindow::Step();

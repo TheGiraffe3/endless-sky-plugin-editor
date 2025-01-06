@@ -25,8 +25,8 @@
 #include "Screen.h"
 #include "Ship.h"
 #include "ShipEditor.h"
-#include "Sprite.h"
-#include "SpriteSet.h"
+#include "image/Sprite.h"
+#include "image/SpriteSet.h"
 #include "SpriteShader.h"
 #include "text/truncate.hpp"
 #include "UI.h"
@@ -469,7 +469,7 @@ void OutfitterEditorPanel::DrawShip(const Ship &ship, const Point &center, bool 
 
 	// Draw the ship name.
 	const Font &font = FontSet::Get(14);
-	const string &name = ship.Name().empty() ? ship.ModelName() : ship.Name();
+	const string &name = ship.Name().empty() ? ship.DisplayModelName() : ship.Name();
 	Point offset(-SIDEBAR_WIDTH / 2, -.5f * SHIP_SIZE + 10.f);
 	font.Draw({name, {SIDEBAR_WIDTH, Alignment::CENTER, Truncate::MIDDLE}},
 		center + offset, *editor.Universe().colors.Get("bright"));
@@ -1417,7 +1417,7 @@ map<const Ship *, vector<string>> OutfitterEditorPanel::FlightCheck() const
 			// The bays should always be empty. But if not, count that ship too.
 			if(bay.ship)
 			{
-				Logger::LogError("Expected bay to be empty for " + ship->ModelName() + ": " + ship->Name());
+				Logger::LogError("Expected bay to be empty for " + ship->TrueModelName() + ": " + ship->Name());
 				categoryCount[bay.ship->Attributes().Category()].emplace_back(bay.ship.get());
 			}
 		}

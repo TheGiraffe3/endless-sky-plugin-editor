@@ -24,9 +24,9 @@
 #include "Planet.h"
 #include "PlayerInfo.h"
 #include "Ship.h"
-#include "Sound.h"
-#include "SpriteSet.h"
-#include "Sprite.h"
+#include "audio/Sound.h"
+#include "image/SpriteSet.h"
+#include "image/Sprite.h"
 #include "System.h"
 #include "UI.h"
 
@@ -117,7 +117,7 @@ void ShipEditor::Render()
 					return;
 
 				auto *newShip = editor.Universe().ships.Get(name);
-				newShip->modelName = name;
+				newShip->trueModelName = name;
 				newShip->isDefined = true;
 				object = newShip;
 				SetDirty();
@@ -131,7 +131,7 @@ void ShipEditor::Render()
 				if(!object->variantName.empty())
 					object->variantName = name;
 				else
-					object->modelName = name;
+					object->trueModelName = name;
 				SetDirty();
 			});
 	ImGui::BeginSimpleCloneModal("Clone Model", [this](const string &name)
@@ -142,7 +142,7 @@ void ShipEditor::Render()
 				auto *clone = editor.Universe().ships.Get(name);
 				*clone = *object;
 				object = clone;
-				object->modelName = name;
+				object->trueModelName = name;
 				SetDirty();
 			});
 	ImGui::BeginSimpleCloneModal("Clone Variant", [this](const string &name)
@@ -151,7 +151,7 @@ void ShipEditor::Render()
 				*clone = *object;
 				object = clone;
 				object->variantName = name;
-				object->base = editor.Universe().ships.Get(object->modelName);
+				object->base = editor.Universe().ships.Get(object->trueModelName);
 				SetDirty();
 			});
 
@@ -179,10 +179,10 @@ void ShipEditor::RenderShip()
 	static double value;
 
 	if(object->variantName.empty())
-		ImGui::Text("model: %s", object->modelName.c_str());
+		ImGui::Text("model: %s", object->trueModelName.c_str());
 	else
 	{
-		ImGui::Text("model: %s", object->base->ModelName().c_str());
+		ImGui::Text("model: %s", object->base->TrueModelName().c_str());
 		ImGui::Text("variant: %s", object->variantName.c_str());
 	}
 	if(ImGui::InputText("plural", &object->pluralModelName))
@@ -568,12 +568,18 @@ void ShipEditor::RenderShip()
 	{
 		if(ImGui::Selectable("Add Turret"))
 		{
-			object->armament.hardpoints.emplace_back(Point(), Angle(), true, false, false);
+			Hardpoint::BaseAttributes attributes;
+			attributes.baseAngle = Angle();
+			attributes.isParallel = false;
+			object->armament.hardpoints.emplace_back(Point(), attributes, true, false);
 			SetDirty();
 		}
 		if(ImGui::Selectable("Add Gun"))
 		{
-			object->armament.hardpoints.emplace_back(Point(), Angle(), false, true, false);
+			Hardpoint::BaseAttributes attributes;
+			attributes.baseAngle = Angle();
+			attributes.isParallel = true;
+			object->armament.hardpoints.emplace_back(Point(), attributes, false, false);
 			SetDirty();
 		}
 		ImGui::EndPopup();
@@ -598,7 +604,7 @@ void ShipEditor::RenderShip()
 				ImGui::EndPopup();
 			}
 
-			double hardpointAngle = it->GetBaseAngle().Degrees();
+			double hardpointAngle = it->GetIdleAngle().Degrees();
 			if(open)
 			{
 				int ivalue = it->isTurret;
@@ -827,19 +833,19 @@ void ShipEditor::WriteToFile(DataWriter &writer, const Ship *ship) const
 	// We might have a variant here so we need to select the correct base ship.
 	if(!diff && !ship->variantName.empty())
 	{
-		if(editor.BaseUniverse().ships.Has(ship->ModelName()))
-			diff = editor.BaseUniverse().ships.Get(ship->ModelName());
-		else if(editor.Universe().ships.Has(ship->ModelName()))
-			diff = editor.Universe().ships.Get(ship->ModelName());
+		if(editor.BaseUniverse().ships.Has(ship->TrueModelName()))
+			diff = editor.BaseUniverse().ships.Get(ship->TrueModelName());
+		else if(editor.Universe().ships.Has(ship->TrueModelName()))
+			diff = editor.Universe().ships.Get(ship->TrueModelName());
 	}
 
 	if(ship->variantName.empty())
-		writer.Write("ship", ship->modelName);
+		writer.Write("ship", ship->trueModelName);
 	else
-		writer.Write("ship", ship->base->ModelName(), ship->variantName);
+		writer.Write("ship", ship->base->TrueModelName(), ship->variantName);
 	writer.BeginChild();
 	if(!diff || ship->pluralModelName != diff->pluralModelName)
-		if(ship->pluralModelName != ship->modelName + 's')
+		if(ship->pluralModelName != ship->trueModelName + 's')
 			writer.Write("plural", ship->pluralModelName);
 	if(!diff || ship->noun != diff->noun)
 		if(!ship->noun.empty())
@@ -1170,7 +1176,7 @@ void ShipEditor::WriteToFile(DataWriter &writer, const Ship *ship) const
 						hardpoint.GetOutfit()->TrueName());
 				else
 					writer.Write(type, 2. * hardpoint.GetPoint().X(), 2. * hardpoint.GetPoint().Y());
-				double hardpointAngle = hardpoint.GetBaseAngle().Degrees();
+				double hardpointAngle = hardpoint.GetIdleAngle().Degrees();
 				writer.BeginChild();
 				{
 					if(hardpointAngle)
