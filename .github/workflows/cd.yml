@@ -16,7 +16,7 @@ concurrency:
 jobs:
   ubuntu_x86_64:
     name: Ubuntu x64
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       ARCH: x86_64
       OUTPUT: Editor-x86_64-continuous.AppImage
@@ -96,7 +96,7 @@ jobs:
 
   macos_x86_64:
     name: MacOS x64
-    runs-on: macos-12
+    runs-on: macos-latest
     env:
       OUTPUT: Editor-macOS-continuous.zip
       CCACHE_DIR: ${{ github.workspace }}/ccache
