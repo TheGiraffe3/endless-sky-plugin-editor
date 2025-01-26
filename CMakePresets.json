@@ -167,7 +167,7 @@
       "inherits": "ci",
       "cacheVariables": {
         "VCPKG_TARGET_TRIPLET": "x64-osx1013-dynamic",
-        "CMAKE_OSX_DEPLOYMENT_TARGET": "10.13"
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "10.15"
       }
     },
     {
