@@ -1,33 +1,60 @@
 cmake_minimum_required(VERSION 3.13)
 
 include(CMakeDependentOption)
+if(UNIX AND NOT APPLE)
+	option(ES_USE_VCPKG "Use vcpkg to get dependencies." OFF)
+else()
+	option(ES_USE_VCPKG "Use vcpkg to get dependencies." ON)
+endif()
 cmake_dependent_option(ES_GLES "Build the game with OpenGL ES" OFF UNIX OFF)
+cmake_dependent_option(ES_USE_SYSTEM_LIBRARIES "Use system libraries instead of the vcpkg ones." ON APPLE OFF)
 
 # Support Debug and Release configurations.
 set(CMAKE_CONFIGURATION_TYPES "Debug" "Release" CACHE STRING "" FORCE)
 
-# Use C++17 without any compiler specific extensions.
+# Use C++20 without any compiler specific extensions.
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "")
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+# We don't use modules, so avoid using unrecognised compiler-specific commands that cmake produces when they are enabled.
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 # Use LTO for Release builds only.
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG FALSE)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
 # On Linux use relative RPATH.
 set(CMAKE_BUILD_RPATH_USE_ORIGIN ON)
 
-# Add our overlays  for vcpkg and setup vcpkg.
-set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_SOURCE_DIR}/overlays")
-set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/overlays")
-set(VCPKG_BOOTSTRAP_OPTIONS "-disableMetrics")
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
-set(X_VCPKG_APPLOCAL_DEPS_INSTALL ON)
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
-	CACHE STRING "Vcpkg toolchain file" FORCE)
+# Setup vcpkg.
+if(ES_USE_VCPKG)
+	set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+		CACHE STRING "Vcpkg toolchain file")
+	# No need to bootstrap vcpkg if the toolchain file is explictly provided.
+	if(CMAKE_TOOLCHAIN_FILE STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
+		include(utils/vcpkg_bootstrap.cmake)
+		x_vcpkg_bootstrap()
+	endif()
+
+	set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_CURRENT_SOURCE_DIR}/overlays")
+	set(VCPKG_OVERLAY_PORTS "${CMAKE_CURRENT_SOURCE_DIR}/overlays")
+	set(VCPKG_BOOTSTRAP_OPTIONS "-disableMetrics")
+	set(VCPKG_INSTALL_OPTIONS "--no-print-usage")
+	set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+	set(X_VCPKG_APPLOCAL_DEPS_INSTALL ON)
+endif()
+
+if(NOT ES_USE_SYSTEM_LIBRARIES)
+	# Tell vcpkg to use the required system libraries.
+	list(APPEND VCPKG_MANIFEST_FEATURES "system-libs")
+endif()
+
+# Various helpful options for IDEs.
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Editor)
+set(CMAKE_VS_JUST_MY_CODE_DEBUGGING ON)
 
 project("Editor" VERSION 0.9.15
 	DESCRIPTION "Unofficial plugin editor for Endless Sky"
-	HOMEPAGE_URL https://github.com/quyykk/plugin-editor
+	HOMEPAGE_URL https://github.com/warp-core/endless-sky-plugin-editor
 	LANGUAGES CXX)
 
 string(TIMESTAMP EDITOR_CURRENT_DATE "%d %b %Y")
@@ -72,8 +99,8 @@ if(APPLE)
 		target_sources(Editor PRIVATE ${RESOURCES})
 
 		foreach(FILE ${RESOURCES})
-		    # Get the relative path from the root folder to the current file.
-		    file(RELATIVE_PATH NEW_FILE "${CMAKE_CURRENT_SOURCE_DIR}/endless-sky" ${FILE})
+			# Get the relative path from the root folder to the current file.
+			file(RELATIVE_PATH NEW_FILE "${CMAKE_CURRENT_SOURCE_DIR}/endless-sky" ${FILE})
 			# Get the parent directory for the new location.
 			get_filename_component(FILE_PATH ${NEW_FILE} DIRECTORY)
 

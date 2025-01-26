@@ -10,6 +10,8 @@ resources/editor.icns
 # dlls needed to run the binary
 *.dll
 
+vcpkg/
+
 # Build Directories and toolchain-generated files
 build/
 install/
