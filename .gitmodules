@@ -1,6 +1,3 @@
-[submodule "vcpkg"]
-	path = vcpkg
-	url = https://github.com/microsoft/vcpkg
 [submodule "endless-sky"]
 	path = endless-sky
 	url = https://github.com/warp-core/endless-sky
