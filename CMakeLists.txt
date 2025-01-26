@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 include(CMakeDependentOption)
-if(UNIX AND NOT APPLE)
-	option(ES_USE_VCPKG "Use vcpkg to get dependencies." OFF)
-else()
-	option(ES_USE_VCPKG "Use vcpkg to get dependencies." ON)
-endif()
+option(ES_USE_VCPKG "Use vcpkg to get dependencies." ON)
 cmake_dependent_option(ES_GLES "Build the game with OpenGL ES" OFF UNIX OFF)
 cmake_dependent_option(ES_USE_SYSTEM_LIBRARIES "Use system libraries instead of the vcpkg ones." ON APPLE OFF)
 
