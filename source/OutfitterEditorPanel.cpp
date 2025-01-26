@@ -44,7 +44,7 @@ namespace {
 		return to_string(tons) + (tons == 1 ? " ton" : " tons");
 	}
 
-	const string SHIP_OUTLINES = "Ship outlines in shops";
+	//const string SHIP_OUTLINES = "Ship outlines in shops";
 
 	constexpr int ICON_TILE = 62;
 
