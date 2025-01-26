@@ -100,7 +100,7 @@ jobs:
 
   macos_x86_64:
     name: MacOS x64
-    runs-on: macos-latest
+    runs-on: macos-13
     env:
       OUTPUT: Editor-macOS-continuous.zip
       CCACHE_DIR: ${{ github.workspace }}/ccache
