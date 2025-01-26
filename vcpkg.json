@@ -30,6 +30,7 @@
         "docking-experimental"
       ]
     },
+	"sdl2",
     "libpng",
     "libjpeg-turbo",
     "libmad",
