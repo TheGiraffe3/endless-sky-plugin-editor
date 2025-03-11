@@ -52,7 +52,7 @@ jobs:
       - name: Package Application
         run: ./utils/build_appimage.sh build/ci
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.OUTPUT }}
           path: ${{ env.OUTPUT }}
@@ -92,7 +92,7 @@ jobs:
           cmake --install build/ci
           7z a ${{ env.OUTPUT }} "./install/ci/*"
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.OUTPUT }}
           path: ${{ env.OUTPUT }}
@@ -132,7 +132,7 @@ jobs:
           cmake --install build/ci
           7z a ${{ env.OUTPUT }} "./install/ci/*"
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.OUTPUT }}
           path: ${{ env.OUTPUT }}
@@ -152,7 +152,7 @@ jobs:
       OUTPUT_WIN: Editor-win64-continuous.zip
       OUTPUT_MACOS: Editor-macOS-continuous.zip
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install github-release
         run: |
           go install github.com/github-release/github-release@latest
