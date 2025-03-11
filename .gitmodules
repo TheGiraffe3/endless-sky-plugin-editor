@@ -1,4 +1,4 @@
 [submodule "endless-sky"]
 	path = endless-sky
-	url = https://github.com/warp-core/endless-sky
-	branch = 0.10.10-editor-patched
+	url = https://github.com/TheGiraffe3/endless-sky
+	branch = editor-0.10.13-beta
